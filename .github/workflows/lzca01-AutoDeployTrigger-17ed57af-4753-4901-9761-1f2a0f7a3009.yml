@@ -1,0 +1,43 @@
+name: Trigger auto deployment for lzca01
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - 'src/**'
+    - '.github/workflows/lzca01-AutoDeployTrigger-17ed57af-4753-4901-9761-1f2a0f7a3009.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.LZCA01_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}/src 
+          registryUrl: ca776a259ca6acr.azurecr.io
+          registryUsername: ${{ secrets.LZCA01_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.LZCA01_REGISTRY_PASSWORD }}
+          containerAppName: lzca01
+          resourceGroup: lz-oauth-test-rg
+          imageToBuild: ca776a259ca6acr.azurecr.io/lzca01:${{ github.sha }}
+          
+            
+
+     
+
