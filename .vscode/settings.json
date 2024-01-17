@@ -1,0 +1,5 @@
+{
+    "containerApps.deployWorkspaceProject.containerAppResourceGroupName": "album-containerapps",
+    "containerApps.deployWorkspaceProject.containerAppName": "code-to-cloud",
+    "containerApps.deployWorkspaceProject.containerRegistryName": "codetocloud8c21a3"
+}

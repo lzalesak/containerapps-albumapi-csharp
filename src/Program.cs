@@ -1,9 +1,19 @@
-var builder = WebApplication.CreateBuilder();
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Identity.Web;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://login.microsoftonline.com/ad9ab3ca-16d5-496d-8591-b7f91a515135/v2.0";
+        options.Audience = "ec5ff91b-9654-4b67-991b-cfc1e21ceee9";
+    });
 
 builder.Services.AddCors(options => {
     options.AddDefaultPolicy(builder =>
